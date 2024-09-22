@@ -1,0 +1,46 @@
+.game-board{
+    size: 500px;
+    align-items: center;
+    
+}
+
+h1{
+    color: red;
+}
+
+body{
+    background-color: lightblue;
+    text-align: center;
+}
+
+.reset-btn{
+    border-radius: 25px;
+    margin-top: 10px;
+}
+
+.game-board td {
+    width: 80px;  
+    height: 80px; 
+    text-align: center;
+    vertical-align: middle;
+    font-size: 24px; 
+    border: 1px solid black; 
+    cursor: pointer;
+
+}
+
+button{
+    border-radius: 10px;
+    padding: 10px;
+    font-weight: bold;
+}
+
+.difficulty-easy{  
+    background-color: green;
+}
+.difficulty-medium{    
+    background-color: yellow;
+}
+.difficulty-hard{  
+    background-color: red;
+}

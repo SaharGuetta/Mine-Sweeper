@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mine Sweeper</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body onload="onGameInit()">
+    <h1>💣Mine Sweeper!💣</h1>
+    <table class="game-board" border="1"> </table>
+    <button class="reset-btn" onclick="onGameInit()">Restart</button>
+    <hr>
+    <button class="difficulty-easy" onclick="changeDifficulty('easy')">Easy Difficulty</button>
+    <button class="difficulty-medium"onclick="changeDifficulty('medium')">Medium Difficulty</button>
+    <button class="difficulty-hard"onclick="changeDifficulty('hard')">Hard Difficulty</button>
+
+    <script src="script.js"></script>
+    <script src="utill.js"></script>
+
+</body>
+</html>
