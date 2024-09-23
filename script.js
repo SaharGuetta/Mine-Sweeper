@@ -3,6 +3,7 @@
 const BOMB = '💣'
 const EMPTY = ' '
 
+var gCount = 50
 var gGame = {
     cellsShown: 0,
     isOn: false,
@@ -11,16 +12,17 @@ var gGame = {
 var gSize = 4
 var gBoard
 const gDifficulties = {
-    easy: { bombs: 2},
-    medium: { bombs: 4},
-    hard: { bombs: 6},
+    easy: { bombs: 2 },
+    medium: { bombs: 4 },
+    hard: { bombs: 6 },
 }
 
 function onGameInit() {
     gBoard = createBoard()
     renderBoard(gBoard)
-    renderBombs()
-
+    renderBombLocations()
+    renderBoard(gBoard)
+    gGame.isOn = true
 }
 
 function createBoard() {
@@ -29,9 +31,12 @@ function createBoard() {
         board[i] = []
         for (var j = 0; j < gSize; j++) {
             board[i][j] = { isBomb: false }
+
         }
+
     } return board
 }
+
 
 
 
@@ -52,23 +57,17 @@ function renderBoard(board) {
     elMat.style.width = '350px'
     elMat.style.height = '350px'
     elMat.style.margin = 'auto'
+
 }
 
 
-function onCellClicked(i, j) {
-    // for (var i = 0; i < gBoard.length; i++) {
-    //     for (var j = 0; j < gBoard[0].length; j++){
 
-    //     }
-    // }
-    console.log(gBoard[i][j])
-}
 
-function renderBombs() {
+function renderBombLocations() {
     const bombsCount = gDifficulties[gGame.difficulty].bombs
     const locations = []
     locations.push({ i: getRandomIntInclusive(0, gSize - 1), j: getRandomIntInclusive(0, gSize - 1) })
-    console.log(locations);
+    // console.log(locations);
 
     while (locations.length < bombsCount) {
         const location = { i: getRandomIntInclusive(0, gSize - 1), j: getRandomIntInclusive(0, gSize - 1) }
@@ -77,11 +76,13 @@ function renderBombs() {
         locations.push(location)
     }
     locations.forEach(location => gBoard[location.i][location.j].isBomb = true)
-    console.table(gBoard)
-    console.log(locations);
+
+    // console.table(gBoard)
+    // console.log(locations)
 
 
 }
+
 
 function changeDifficulty(difficulty) {
     gGame.difficulty = difficulty
@@ -96,5 +97,37 @@ function changeDifficulty(difficulty) {
             gSize = 6
             break
     }
+    onGameInit()
+}
+
+function onCellClicked(i, j) {
+    if (!gGame.isOn) return
+
+    const cell = gBoard[i][j]
+    if (cell.isBomb) {
+        const elCell = document.querySelector(`.cell-${i}-${j}`)
+        elCell.innerHTML = BOMB
+        elCell.classList.add('bomb')
+        alert('Bomb! Game Over!')
+        gGame.isOn = false
+        const elMeter = document.querySelector('.click-meter span')
+        elMeter.innerHTML = '--'
+        return
+    } else {
+        const elCell = document.querySelector(`.cell-${i}-${j}`)
+        elCell.classList.add('not-bomb')
+        elCell.innerHTML = '✔️'
+        gCount--
+        const elMeter = document.querySelector('.click-meter span')
+        elMeter.innerHTML = gCount
+    }
+
+}
+
+function restartGame() {
+    gCount = 50
+    const elMeter = document.querySelector('.click-meter span')
+    elMeter.innerHTML = gCount
+    gGame.isOn = true
     onGameInit()
 }
