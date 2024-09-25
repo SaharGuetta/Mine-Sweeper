@@ -11,6 +11,7 @@ h1 {
 body {
     background-color: lightblue;
     text-align: center;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 .reset-btn {
@@ -50,6 +51,7 @@ button {
 
 .cell {
     cursor: pointer;
+    user-select: none;
 }
 
 .bomb {
@@ -64,4 +66,7 @@ button {
     background-color: green;
     width: 80px;
     height: 80px;
+}
+.result-text{
+    height: 30px;
 }
