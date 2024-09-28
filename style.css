@@ -1,6 +1,7 @@
 .game-board {
     size: 500px;
     align-items: center;
+    background-color: lightblue;
 
 }
 
@@ -9,9 +10,10 @@ h1 {
 }
 
 body {
-    background-color: lightblue;
+ 
     text-align: center;
     font-family: 'Courier New', Courier, monospace;
+    background-color: lightblue;
 }
 
 .reset-btn {

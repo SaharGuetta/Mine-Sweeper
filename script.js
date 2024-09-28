@@ -1,26 +1,23 @@
 'use strict'
-//to do: victory screen (all non-bomb cells are clicked)
-//adjust click count according to difficulty
-//
-
 
 const BOMB = '💣'
 const EMPTY = ' '
 
-var gClickCount = 50
+var gClickCount
 var gGame = {
     cellsShown: 0,
     isOn: false,
     difficulty: 'easy',
     isFirstClick: true,
-    flagCount: 0
+    flagCount: 0,
+    isDark: false,
 }
 var gSize = 4
 var gBoard
 const gDifficulties = {
-    easy: { bombs: 2 },
-    medium: { bombs: 4 },
-    hard: { bombs: 6 },
+    easy: { bombs: 2, strikes: 1 },
+    medium: { bombs: 4, strikes: 2 },
+    hard: { bombs: 6, strikes: 3 },
 }
 
 function onGameInit() {
@@ -91,12 +88,16 @@ function changeDifficulty(difficulty) {
     switch (difficulty) {
         case 'easy':
             gSize = 4
+
+            gDifficulties[difficulty].strikes
             break
         case 'medium':
             gSize = 5
+            gDifficulties[difficulty].strikes
             break
         case 'hard':
             gSize = 6
+            gDifficulties[difficulty].strikes
             break
     }
     restartGame()
@@ -121,6 +122,7 @@ function onCellClicked(i, j) {
         elMeter.innerHTML = gClickCount
         revealCell(i, j, elCell)
         gBoard[i][j].isRevealed = true
+        checkVictory()
     }
 }
 
@@ -169,4 +171,47 @@ function onSetFlag(ev, i, j) {
     gBoard[i][j].isFlag = true
     ev.target.innerHTML = '🚩'
     gGame.flagCount++
+    checkVictory()
+}
+
+function checkVictory() {
+    var revealedCells = 0
+    var flaggedBombs = 0
+    var totalBombs = gDifficulties[gGame.difficulty].bombs
+
+    for (var i = 0; i < gBoard.length; i++) {
+        for (var j = 0; j < gBoard[i].length; j++) {
+            const cell = gBoard[i][j]
+
+            if (!cell.isBomb && cell.isRevealed) {
+                revealedCells++
+            }
+
+            if (cell.isBomb && cell.isFlag) {
+                flaggedBombs++
+            }
+        }
+    }
+    if (revealedCells === (gSize * gSize - totalBombs) || flaggedBombs === totalBombs) {
+        document.querySelector('.result-text').innerHTML = 'You Won!'
+        gGame.isOn = false
+        document.querySelector('.reset-btn').innerHTML = '😎'
+        const elMeter = document.querySelector('.click-meter span')
+        elMeter.innerHTML = '--'
+    }
+}
+
+function toggleDarkMode() {
+    var elBody = document.querySelector('body');
+    var elTextElements = document.querySelectorAll('body, .result-text, .click-meter span, .reset-btn'); 
+
+    if (gGame.isDark) {
+        elBody.style.backgroundColor = 'lightblue';  
+        elTextElements.forEach(el => el.style.color = 'black');  
+        gGame.isDark = false;  
+    } else {
+        elBody.style.backgroundColor = 'black';  
+        elTextElements.forEach(el => el.style.color = 'lightgray');  
+        gGame.isDark = true;  
+    }
 }
